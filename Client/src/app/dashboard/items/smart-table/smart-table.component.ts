@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
+import { ItemsService } from '../../../items.service';
 
 @Component({
   selector: 'ngx-smart-table',
@@ -48,14 +49,14 @@ export class SmartTableComponent {
       },
       sellerName: {
         title: 'Seller Name',
-        type: 'string'
+        type: 'string',
       },
     },
   };
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor() {
+  constructor(private itemsService: ItemsService) {
   }
 
   onCreateConfirm(event): void {
