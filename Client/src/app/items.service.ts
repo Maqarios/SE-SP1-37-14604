@@ -15,21 +15,27 @@ export class ItemsService {
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>("/product/getProducts")
+    return this.http.get<Product[]>('/product/getProducts')
       .pipe(
         catchError(this.handleError('getProducts', []))
       );
   }
 
   updateProduct(product: Product): Observable<any> {
-    return this.http.patch("/product/updateProduct/:" + product.id, product, httpOptions).pipe(
+    return this.http.patch('/product/updateProduct/' + product.id, product, httpOptions).pipe(
       catchError(this.handleError<any>('updateProduct'))
     );
   }
 
   createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>("/product/createProduct", product, httpOptions).pipe(
+    return this.http.post<Product>('/product/createProduct', product, httpOptions).pipe(
       catchError(this.handleError<Product>('createProduct'))
+    );
+  }
+
+  deleteProduct(product: Product): Observable<Product> {
+    return this.http.delete<Product>('/product/deleteProduct/' + product.id, httpOptions).pipe(
+      catchError(this.handleError<Product>('deleteProduct'))
     );
   }
 
