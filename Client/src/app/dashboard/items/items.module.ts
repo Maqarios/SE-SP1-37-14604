@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 
 import { ThemeModule } from '../../@theme/theme.module';
 import { ItemsRoutingModule } from './items-routing.module';
+import { SmartTableComponent } from './smart-table/smart-table.component';
 
-import { ItemsComponent } from './items.component';
 
 @NgModule({
   imports: [ThemeModule, ItemsRoutingModule],
-  declarations: [ItemsComponent],
+  declarations: [SmartTableComponent],
   providers: []
 })
 export class ItemsModule {}
