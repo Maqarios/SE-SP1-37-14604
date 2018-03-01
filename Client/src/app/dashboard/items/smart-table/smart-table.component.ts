@@ -76,7 +76,7 @@ export class SmartTableComponent {
   }
 
   getProducts(): void {
-    this.itemsService.getProducts().subscribe(owsa => this.source.load(owsa.data));
+    this.itemsService.getProducts().subscribe(res => this.source.load(res.data));
   }
 
   onCreateConfirm(event): void {
@@ -93,7 +93,7 @@ export class SmartTableComponent {
     if(!user || user.userType == 'viewer') {
       event.confirm.reject();
     } else {
-      this.itemsService.createProduct(product).subscribe(function (owsa) { });
+      this.itemsService.createProduct(product).subscribe(function (res) { });
       event.confirm.resolve();
     }
   }
@@ -112,7 +112,7 @@ export class SmartTableComponent {
     if(!user || user.userType == 'viewer') {
       event.confirm.reject();
     } else {
-      this.itemsService.updateProduct(product).subscribe(function (owsa) { });
+      this.itemsService.updateProduct(product).subscribe(function (res) { });
       event.confirm.resolve();
     }
   }
@@ -131,7 +131,7 @@ export class SmartTableComponent {
     if(!user || user.userType == 'viewer' || user.userType == 'manager') {
       event.confirm.reject();
     } else {
-      this.itemsService.deleteProduct(product).subscribe(function (owsa) { });
+      this.itemsService.deleteProduct(product).subscribe(function (res) { });
       event.confirm.resolve();
     }
   }
