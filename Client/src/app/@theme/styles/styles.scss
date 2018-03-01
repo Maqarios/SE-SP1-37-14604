@@ -7,11 +7,15 @@
 // loading progress bar theme
 @import './pace.theme';
 
+
+@import '~@nebular/auth/styles/all'; // or @import '~@nebular/auth/styles/{theme-name}';
+
+
 // install the framework and custom global styles
 @include nb-install() {
   // framework global styles
   @include nb-theme-global();
-
+  @include nb-auth-global(); // append the install mixin inside of the nb-install
   // loading progress bar
   @include ngx-pace-theme();
 }

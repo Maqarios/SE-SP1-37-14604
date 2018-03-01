@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+
+
 
 const routes: Routes = [
   {
@@ -7,7 +11,14 @@ const routes: Routes = [
     loadChildren: './dashboard/dashboard.module#DashboardModule'
   },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: '**', redirectTo: 'dashboard' }
+  {
+    path: 'auth/register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'auth/login',
+    component: LoginComponent
+  }
 ];
 
 const config: ExtraOptions = {
@@ -19,4 +30,4 @@ const config: ExtraOptions = {
   exports: [RouterModule],
   providers: []
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@nebular/auth": "^2.0.0-rc.6",
     "@nebular/theme": "^2.0.0-rc.5",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0",
     "angular2-toaster": "^4.0.1",

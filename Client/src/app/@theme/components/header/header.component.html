@@ -12,6 +12,6 @@
 
 <nb-actions size="medium" class="header-container right">
   <nb-action>
-    <nb-user [menu]="userMenu" [name]="user?.username" (menuClick)="onMenuClick($event)"></nb-user>
+    <nb-user [menu]="userMenu" [name]="user?.fullName" [title]="user?.userType | ngxCapitalize" (menuClick)="onMenuClick($event)"></nb-user>
   </nb-action>
 </nb-actions>
