@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { ItemsService } from '../../../items.service';
+import { Product } from '../product';
 
 @Component({
   selector: 'ngx-smart-table',
@@ -55,20 +56,59 @@ export class SmartTableComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
+  asd: any;
 
   constructor(private itemsService: ItemsService) {
   }
 
+  ngOnInit() {
+    this.getProducts();
+  }
+
+  getProducts(): void {
+    this.itemsService.getProducts().subscribe(owsa => this.source.load(owsa.data));
+  }
+
   onCreateConfirm(event): void {
-    // TODO
+    console.log(event.newData.name);
+    let product: Product = {
+      _id: 0, // USELESS
+      name: event.newData.name,
+      price: event.newData.price,
+      created: Date(),
+      updated: Date(),
+      sellerName: event.newData.sellerName,
+    }
+    
+    this.itemsService.createProduct(product).subscribe(function (owsa) { });
     event.confirm.resolve();
   }
+
   onEditConfirm(event): void {
-    // TODO
+    let product: Product = {
+      _id: event.data._id,
+      name: event.data.name,
+      price: event.data.price,
+      created: event.data.createdAt,
+      updated: Date(),
+      sellerName: event.data.sellerName,
+    }
+
+    this.itemsService.updateProduct(product).subscribe(function (owsa) { });
     event.confirm.resolve();
   }
+
   onDeleteConfirm(event): void {
-    // TODO
+    let product: Product = {
+      _id: event.data._id,
+      name: event.data.name,
+      price: event.data.price,
+      created: event.data.createdAt,
+      updated: event.data.updateAt,
+      sellerName: event.data.sellerName,
+    }
+
+    this.itemsService.deleteProduct(product).subscribe(function (owsa) { });
     event.confirm.resolve();
   }
 }

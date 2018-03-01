@@ -12,29 +12,34 @@ const httpOptions = {
 @Injectable()
 export class ItemsService {
 
+  getProductsUrl = 'http://localhost:3000/api/product/getProducts';
+  updateProductUrl = 'http://localhost:3000/api/product/updateProduct';
+  createProductUrl = 'http://localhost:3000/api/product/createProduct';
+  deleteProductUrl = 'http://localhost:3000/api/product/deleteProduct';
+
   constructor(private http: HttpClient) { }
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>('/product/getProducts')
+  getProducts(): any {
+    return this.http.get<Product[]>(this.getProductsUrl)
       .pipe(
         catchError(this.handleError('getProducts', []))
       );
   }
 
   updateProduct(product: Product): Observable<any> {
-    return this.http.patch('/product/updateProduct/' + product.id, product, httpOptions).pipe(
+    return this.http.patch(this.updateProductUrl + '/' +product._id, product, httpOptions).pipe(
       catchError(this.handleError<any>('updateProduct'))
     );
   }
 
-  createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>('/product/createProduct', product, httpOptions).pipe(
+  createProduct(product: Product): Observable<any> {
+    return this.http.post<Product>(this.createProductUrl, product, httpOptions).pipe(
       catchError(this.handleError<Product>('createProduct'))
     );
   }
 
-  deleteProduct(product: Product): Observable<Product> {
-    return this.http.delete<Product>('/product/deleteProduct/' + product.id, httpOptions).pipe(
+  deleteProduct(product: Product): Observable<any> {
+    return this.http.delete<Product>(this.deleteProductUrl + '/' + product._id, httpOptions).pipe(
       catchError(this.handleError<Product>('deleteProduct'))
     );
   }
