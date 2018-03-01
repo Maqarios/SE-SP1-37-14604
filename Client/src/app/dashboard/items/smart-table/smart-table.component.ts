@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { ItemsService } from '../../../items.service';
+import { UserService } from '../../../user.service';
 import { Product } from '../product';
 
 @Component({
@@ -66,9 +67,8 @@ export class SmartTableComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  asd: any;
 
-  constructor(private itemsService: ItemsService) {
+  constructor(private itemsService: ItemsService, private userService: UserService) {
   }
 
   ngOnInit() {
@@ -88,9 +88,14 @@ export class SmartTableComponent {
       updated: null,
       sellerName: event.newData.sellerName,
     }
-    
-    this.itemsService.createProduct(product).subscribe(function (owsa) { });
-    event.confirm.resolve();
+
+    let user = this.userService.user;
+    if(!user || user.userType == 'viewer') {
+      event.confirm.reject();
+    } else {
+      this.itemsService.createProduct(product).subscribe(function (owsa) { });
+      event.confirm.resolve();
+    }
   }
 
   onEditConfirm(event): void {
@@ -103,8 +108,13 @@ export class SmartTableComponent {
       sellerName: event.newData.sellerName,
     }
 
-    this.itemsService.updateProduct(product).subscribe(function (owsa) { });
-    event.confirm.resolve();
+    let user = this.userService.user;
+    if(!user || user.userType == 'viewer') {
+      event.confirm.reject();
+    } else {
+      this.itemsService.updateProduct(product).subscribe(function (owsa) { });
+      event.confirm.resolve();
+    }
   }
 
   onDeleteConfirm(event): void {
@@ -117,7 +127,12 @@ export class SmartTableComponent {
       sellerName: null,
     }
 
-    this.itemsService.deleteProduct(product).subscribe(function (owsa) { });
-    event.confirm.resolve();
+    let user = this.userService.user;
+    if(!user || user.userType == 'viewer' || user.userType == 'manager') {
+      event.confirm.reject();
+    } else {
+      this.itemsService.deleteProduct(product).subscribe(function (owsa) { });
+      event.confirm.resolve();
+    }
   }
 }
