@@ -81,10 +81,10 @@ export class SmartTableComponent {
 
   onCreateConfirm(event): void {
     let product: Product = {
-      _id: null, // USELESS
+      _id: null,
       name: event.newData.name,
       price: event.newData.price,
-      created: null,
+      created: Date(),
       updated: null,
       sellerName: event.newData.sellerName,
     }
@@ -98,8 +98,8 @@ export class SmartTableComponent {
       _id: event.data._id,
       name: event.newData.name,
       price: event.newData.price,
-      created: null,
-      updated: null,
+      created: event.data.created,
+      updated: Date(),
       sellerName: event.newData.sellerName,
     }
 
