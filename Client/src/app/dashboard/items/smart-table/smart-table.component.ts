@@ -35,22 +35,32 @@ export class SmartTableComponent {
       name: {
         title: 'Name',
         type: 'string',
+        addable: true,
+        editable: true,
       },
       price: {
         title: 'Price',
         type: 'number',
+        addable: true,
+        editable: true,
       },
       createdAt: {
-        title: 'Created At',
+        title: 'Created',
         type: 'string',
+        addable: false,
+        editable: false,
       },
-      updateAt: {
-        title: 'Updated At',
+      updatedAt: {
+        title: 'Updated',
         type: 'string',
+        addable: false,
+        editable: false,
       },
       sellerName: {
         title: 'Seller Name',
         type: 'string',
+        addable: true,
+        editable: true,
       },
     },
   };
@@ -70,13 +80,12 @@ export class SmartTableComponent {
   }
 
   onCreateConfirm(event): void {
-    console.log(event.newData.name);
     let product: Product = {
-      _id: 0, // USELESS
+      _id: null, // USELESS
       name: event.newData.name,
       price: event.newData.price,
-      created: Date(),
-      updated: Date(),
+      created: null,
+      updated: null,
       sellerName: event.newData.sellerName,
     }
     
@@ -87,11 +96,11 @@ export class SmartTableComponent {
   onEditConfirm(event): void {
     let product: Product = {
       _id: event.data._id,
-      name: event.data.name,
-      price: event.data.price,
-      created: event.data.createdAt,
-      updated: Date(),
-      sellerName: event.data.sellerName,
+      name: event.newData.name,
+      price: event.newData.price,
+      created: null,
+      updated: null,
+      sellerName: event.newData.sellerName,
     }
 
     this.itemsService.updateProduct(product).subscribe(function (owsa) { });
@@ -101,11 +110,11 @@ export class SmartTableComponent {
   onDeleteConfirm(event): void {
     let product: Product = {
       _id: event.data._id,
-      name: event.data.name,
-      price: event.data.price,
-      created: event.data.createdAt,
-      updated: event.data.updateAt,
-      sellerName: event.data.sellerName,
+      name: null,
+      price: null,
+      created: null,
+      updated: null,
+      sellerName: null,
     }
 
     this.itemsService.deleteProduct(product).subscribe(function (owsa) { });

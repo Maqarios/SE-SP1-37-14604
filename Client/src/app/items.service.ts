@@ -26,15 +26,13 @@ export class ItemsService {
       );
   }
 
+  createProduct(product: Product): Observable<any> {
+    return this.http.post<Product>(this.createProductUrl, product, httpOptions);
+  }
+
   updateProduct(product: Product): Observable<any> {
     return this.http.patch(this.updateProductUrl + '/' +product._id, product, httpOptions).pipe(
       catchError(this.handleError<any>('updateProduct'))
-    );
-  }
-
-  createProduct(product: Product): Observable<any> {
-    return this.http.post<Product>(this.createProductUrl, product, httpOptions).pipe(
-      catchError(this.handleError<Product>('createProduct'))
     );
   }
 
