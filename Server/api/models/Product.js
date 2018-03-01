@@ -18,8 +18,8 @@ var productSchema = mongoose.Schema({
   },
   updatedAt: Date,
   sellerName: {
-    type: string,
-    requuired: True
+    type: String,
+    requuired: true
   }
 });
 
