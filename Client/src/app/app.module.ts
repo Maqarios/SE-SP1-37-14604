@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, DatePipe, CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,6 +26,6 @@ import { FormsModule }   from '@angular/forms';
     AppRoutingModule,
   ],
   bootstrap: [AppComponent],
-  providers: [{ provide: APP_BASE_HREF, useValue: '/' }, UserService]
+  providers: [{ provide: APP_BASE_HREF, useValue: '/' }, UserService, DatePipe, CurrencyPipe]
 })
 export class AppModule { }

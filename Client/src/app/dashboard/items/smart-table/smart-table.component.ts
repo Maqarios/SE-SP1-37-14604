@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 import { LocalDataSource } from 'ng2-smart-table';
 import { ItemsService } from '../../../items.service';
 import { UserService } from '../../../user.service';
@@ -44,18 +45,27 @@ export class SmartTableComponent {
         type: 'number',
         addable: true,
         editable: true,
+        valuePrepareFunction: (price) => {
+          return (price)?this.currencyPipe.transform(price, ''):'N/A';
+        }
       },
       createdAt: {
         title: 'Created',
         type: 'string',
         addable: false,
         editable: false,
+        valuePrepareFunction: (date) => {
+          return (date)?this.datePipe.transform(new Date(date), 'EEEE, MMMM d, y'):this.datePipe.transform(new Date(), 'EEEE, MMMM d, y');
+        }
       },
       updatedAt: {
         title: 'Updated',
         type: 'string',
         addable: false,
         editable: false,
+        valuePrepareFunction: (date) => {
+          return (date)?this.datePipe.transform(new Date(date), 'EEEE, MMMM d, y'):'N/A';
+        }
       },
       sellerName: {
         title: 'Seller Name',
@@ -68,7 +78,7 @@ export class SmartTableComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private itemsService: ItemsService, private userService: UserService) {
+  constructor(private datePipe: DatePipe, private currencyPipe: CurrencyPipe, private itemsService: ItemsService, private userService: UserService) {
   }
 
   ngOnInit() {
