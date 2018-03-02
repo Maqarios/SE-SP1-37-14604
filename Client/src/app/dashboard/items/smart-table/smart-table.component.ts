@@ -87,15 +87,16 @@ export class SmartTableComponent {
   }
 
   getProducts(): void {
-    this.itemsService.getProducts().subscribe(res => this.source.load(res.data)); // Filter To Be Called If Needed
+    // this.itemsService.getProducts().subscribe(res => this.source.load(res.data)); // Filter To Be Called If Needed
+    this.itemsService.getProducts().subscribe(res => this.source.load(this.filterProducts(res.data)));
   }
 
   onCreateConfirm(event): void {
-    if (!this.isValid(event)) {
+    if (!this.isValid(event) || event.newData.sellerName !== 'Maqarios') { // TODO
       alert('Make Sure You Entered Correct Values!');
     } else {
       let user = this.userService.user;
-      // event.newData.sellerName = user.fullName;
+      // event.newData.sellerName = user.fullName; // TODO
       if (!user || user.userType == 'viewer') {
         event.confirm.reject();
         alert('Action Is Not Allowed!');
@@ -109,7 +110,7 @@ export class SmartTableComponent {
   }
 
   onEditConfirm(event): void {
-    if (!this.isValid(event)) {
+    if (!this.isValid(event) || event.newData.sellerName !== 'Maqarios') { // TODO
       alert('Make Sure You Entered Correct Values!');
     } else {
       let user = this.userService.user;
@@ -140,11 +141,9 @@ export class SmartTableComponent {
 
   filterProducts(products: Product[]): Product[]{
     let user = this.userService.user;
-    if(!user) {return products;}
-
     let tempProducts = [];
     for(let product of products) {
-      if(product.sellerName === user.fullName) {
+      if(product.sellerName === 'Maqarios') {
         tempProducts.push(product);
       }
     }
