@@ -87,7 +87,7 @@ export class SmartTableComponent {
   }
 
   getProducts(): void {
-    this.itemsService.getProducts().subscribe(res => this.source.load(res.data));
+    this.itemsService.getProducts().subscribe(res => this.source.load(res.data)); // Filter To Be Called If Needed
   }
 
   onCreateConfirm(event): void {
@@ -95,6 +95,7 @@ export class SmartTableComponent {
       alert('Make Sure You Entered Correct Values!');
     } else {
       let user = this.userService.user;
+      // event.newData.sellerName = user.fullName;
       if (!user || user.userType == 'viewer') {
         event.confirm.reject();
         alert('Action Is Not Allowed!');
@@ -137,9 +138,21 @@ export class SmartTableComponent {
     }
   }
 
+  filterProducts(products: Product[]): Product[]{
+    let user = this.userService.user;
+    if(!user) {return products;}
+
+    let tempProducts = [];
+    for(let product of products) {
+      if(product.sellerName === user.fullName) {
+        tempProducts.push(product);
+      }
+    }
+    return tempProducts;
+  }
+
   isValid(event): boolean {
     return isString(event.newData.name)
-      && isNumber(event.newData.price)
-      && isString(event.newData.sellerName);
+      && isNumber(event.newData.price);
   }
 }
