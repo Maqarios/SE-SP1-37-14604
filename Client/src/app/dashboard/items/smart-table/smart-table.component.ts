@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 import { LocalDataSource } from 'ng2-smart-table';
 import { ItemsService } from '../../../items.service';
@@ -55,7 +55,7 @@ export class SmartTableComponent {
         addable: false,
         editable: false,
         valuePrepareFunction: (date) => {
-          return (date)?this.datePipe.transform(new Date(date), 'EEEE, MMMM d, y'):this.datePipe.transform(new Date(), 'EEEE, MMMM d, y');
+          return (date)?this.datePipe.transform(new Date(date), 'EEEE, MMMM d, y'):'N/A';
         }
       },
       updatedAt: {
@@ -103,8 +103,9 @@ export class SmartTableComponent {
     if(!user || user.userType == 'viewer') {
       event.confirm.reject();
     } else {
-      this.itemsService.createProduct(product).subscribe(function (res) { });
-      event.confirm.resolve();
+      this.itemsService.createProduct(product).subscribe(function (res) {
+        event.confirm.resolve(res.data);
+      });
     }
   }
 
@@ -122,8 +123,9 @@ export class SmartTableComponent {
     if(!user || user.userType == 'viewer') {
       event.confirm.reject();
     } else {
-      this.itemsService.updateProduct(product).subscribe(function (res) { });
-      event.confirm.resolve();
+      this.itemsService.updateProduct(product).subscribe(function (res) {
+        event.confirm.resolve(res.data);
+      });
     }
   }
 
@@ -141,8 +143,9 @@ export class SmartTableComponent {
     if(!user || user.userType == 'viewer' || user.userType == 'manager') {
       event.confirm.reject();
     } else {
-      this.itemsService.deleteProduct(product).subscribe(function (res) { });
-      event.confirm.resolve();
+      this.itemsService.deleteProduct(product).subscribe(function (res) {
+        event.confirm.resolve((res.data)?null:res.data);
+      });
     }
   }
 }
