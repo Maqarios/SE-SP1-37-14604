@@ -4,6 +4,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { ItemsService } from '../../../items.service';
 import { UserService } from '../../../user.service';
 import { Product } from '../product';
+import { isString, isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Component({
   selector: 'ngx-smart-table',
@@ -46,7 +47,7 @@ export class SmartTableComponent {
         addable: true,
         editable: true,
         valuePrepareFunction: (price) => {
-          return (price)?this.currencyPipe.transform(price, ''):'N/A';
+          return (price) ? this.currencyPipe.transform(price, '') : 'N/A';
         }
       },
       createdAt: {
@@ -55,7 +56,7 @@ export class SmartTableComponent {
         addable: false,
         editable: false,
         valuePrepareFunction: (date) => {
-          return (date)?this.datePipe.transform(new Date(date), 'EEEE, MMMM d, y'):'N/A';
+          return (date) ? this.datePipe.transform(new Date(date), 'EEEE, MMMM d, y') : 'N/A';
         }
       },
       updatedAt: {
@@ -64,7 +65,7 @@ export class SmartTableComponent {
         addable: false,
         editable: false,
         valuePrepareFunction: (date) => {
-          return (date)?this.datePipe.transform(new Date(date), 'EEEE, MMMM d, y'):'N/A';
+          return (date) ? this.datePipe.transform(new Date(date), 'EEEE, MMMM d, y') : 'N/A';
         }
       },
       sellerName: {
@@ -90,62 +91,49 @@ export class SmartTableComponent {
   }
 
   onCreateConfirm(event): void {
-    let product: Product = {
-      _id: null,
-      name: event.newData.name,
-      price: event.newData.price,
-      created: Date(),
-      updated: null,
-      sellerName: event.newData.sellerName,
-    }
-
-    let user = this.userService.user;
-    if(!user || user.userType == 'viewer') {
-      event.confirm.reject();
+    if (!this.isValid(event)) {
+      alert("Make Sure You Entered Correct Values!");
     } else {
-      this.itemsService.createProduct(product).subscribe(function (res) {
-        event.confirm.resolve(res.data);
-      });
+      let user = this.userService.user;
+      if (!user || user.userType == 'viewer') {
+        event.confirm.reject();
+      } else {
+        this.itemsService.createProduct(event.newData).subscribe(function (res) {
+          event.confirm.resolve(res.data);
+        });
+      }
     }
   }
 
   onEditConfirm(event): void {
-    let product: Product = {
-      _id: event.data._id,
-      name: event.newData.name,
-      price: event.newData.price,
-      created: event.data.created,
-      updated: Date(),
-      sellerName: event.newData.sellerName,
-    }
-
-    let user = this.userService.user;
-    if(!user || user.userType == 'viewer') {
-      event.confirm.reject();
+    if (!this.isValid(event)) {
+      alert("Make Sure You Entered Correct Values!");
     } else {
-      this.itemsService.updateProduct(product).subscribe(function (res) {
-        event.confirm.resolve(res.data);
-      });
+      let user = this.userService.user;
+      if (!user || user.userType == 'viewer') {
+        event.confirm.reject();
+      } else {
+        this.itemsService.updateProduct(event.newData).subscribe(function (res) {
+          event.confirm.resolve(res.data);
+        });
+      }
     }
   }
 
   onDeleteConfirm(event): void {
-    let product: Product = {
-      _id: event.data._id,
-      name: null,
-      price: null,
-      created: null,
-      updated: null,
-      sellerName: null,
-    }
-
     let user = this.userService.user;
-    if(!user || user.userType == 'viewer' || user.userType == 'manager') {
+    if (!user || user.userType == 'viewer' || user.userType == 'manager') {
       event.confirm.reject();
     } else {
-      this.itemsService.deleteProduct(product).subscribe(function (res) {
-        event.confirm.resolve((res.data)?null:res.data);
+      this.itemsService.deleteProduct(event.data).subscribe(function (res) {
+        event.confirm.resolve((res.data) ? null : res.data);
       });
     }
+  }
+
+  isValid(event): boolean {
+    return isString(event.newData.name)
+      && isNumber(event.newData.price)
+      && isString(event.newData.sellerName);
   }
 }
