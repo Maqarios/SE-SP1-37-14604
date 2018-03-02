@@ -92,14 +92,16 @@ export class SmartTableComponent {
 
   onCreateConfirm(event): void {
     if (!this.isValid(event)) {
-      alert("Make Sure You Entered Correct Values!");
+      alert('Make Sure You Entered Correct Values!');
     } else {
       let user = this.userService.user;
       if (!user || user.userType == 'viewer') {
         event.confirm.reject();
+        alert('Action Is Not Allowed!');
       } else {
         this.itemsService.createProduct(event.newData).subscribe(function (res) {
           event.confirm.resolve(res.data);
+          alert(res.msg);
         });
       }
     }
@@ -107,14 +109,16 @@ export class SmartTableComponent {
 
   onEditConfirm(event): void {
     if (!this.isValid(event)) {
-      alert("Make Sure You Entered Correct Values!");
+      alert('Make Sure You Entered Correct Values!');
     } else {
       let user = this.userService.user;
       if (!user || user.userType == 'viewer') {
         event.confirm.reject();
+        alert('Action Is Not Allowed!');
       } else {
         this.itemsService.updateProduct(event.newData).subscribe(function (res) {
           event.confirm.resolve(res.data);
+          alert(res.msg);
         });
       }
     }
@@ -124,9 +128,11 @@ export class SmartTableComponent {
     let user = this.userService.user;
     if (!user || user.userType == 'viewer' || user.userType == 'manager') {
       event.confirm.reject();
+      alert('Action Is Not Allowed!');
     } else {
       this.itemsService.deleteProduct(event.data).subscribe(function (res) {
         event.confirm.resolve((res.data) ? null : res.data);
+        alert(res.msg);
       });
     }
   }
